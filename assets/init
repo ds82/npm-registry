@@ -13,6 +13,7 @@ PORT=5984
 HOST="${HOSTNAME}:${PORT}"
 REGISTRY_URL="http://${CREDENTIALS}@${HOST}/registry"
 REGISTRY_SETTING="--npm-registry-couchapp:couch=${REGISTRY_URL}"
+MAX_BYTES="${PAYLOAD_MAX_BYTES:-1000000}"
 
 # do not prompt coping ddoc from scratch to app
 export NO_PROMPT=true
@@ -56,6 +57,7 @@ appStart () {
 
   echo "Couchapp installed"
 
+  sed -i kappa.json -e 's/.*maxBytes.*/\t"maxBytes": ${MAX_BYTES}/'
   kappa -c /app/setup/kappa.json
 }
 
